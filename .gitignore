@@ -1,3 +1,5 @@
+#library link
+libudev.so.0
 # Logs
 logs
 *.log
