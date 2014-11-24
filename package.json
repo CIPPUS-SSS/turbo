@@ -1,23 +1,25 @@
 {
-	"name": "turbo",
-	"main": "index.html",
-	"version":"0.0.1",
-	"description":"open dictionary",
-	"window": {
-		"toolbar": false,
-		"width": 800,
-		"height": 600
-	},
-	"maintainers": [
-	{
-		"name": "ggaaooppeenngg",
-		"email": "gaopeg01@gmail.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/CIPPUS-SSS/turbo.git"
-	},
-	"dependencies": {
-		"markdown":"0.5.0"
-	}
+    "name": "turbo",
+    "main": "index.html",
+    "version":"0.0.1",
+    "description":"open dictionary",
+    "window": {
+        "frame":true,//栏目条
+        "toolbar": true,//浏览条
+        "width": 800,
+        "height": 600
+    },
+    "maintainers": [
+        {
+        "name": "ggaaooppeenngg",
+        "email": "gaopeg01@gmail.com"
+    }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/CIPPUS-SSS/turbo.git"
+    },
+    "dependencies": {
+        "markdown":"0.5.0"
+    }
 }

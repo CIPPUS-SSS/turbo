@@ -1,0 +1,10 @@
+gui = require('nw.gui')
+windown = gui.Window
+gui.Menu 是一个菜单(menu可以时menubar,或者默认类型)
+通过gui.Menu.submenu可以添加子菜单
+gui.MenuItem 是菜单的一项,菜单有label属性和click函数用于显示名字和点击的回调函数.
+
+fram 是有圈叉的那个条, toolbar 是有浏览框和调试者工具的条
+
+win.on　可以监听事件,然后还有监听事件可以检测最大化和最小化的变化.
+maximize 和 minimize　等函数可以对窗口操作.

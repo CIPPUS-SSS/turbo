@@ -1,12 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
+        <title>Turbo</title>
+        <script>
 
-</head>
-<body>
-<script>
-var markdown = require('markdown').markdown;
-document.write(markdown.toHTML("Hello **World**!"));
-</script>
-</body>
+            var nw = require('nw.gui');
+            var win = nw.Window.get();
+            win.isMaximized = false;
+
+        </script>
+
+    </head>
+    <body>
+
+        <header>
+            <ul>
+                <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li><!--
+                --><li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li><!--
+                --><li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
+            </ul>
+        </header>
+
+        <script>
+
+        // Min
+        document.getElementById('windowControlMinimize').onclick = function()
+        {
+            win.minimize();
+        };
+
+        // Close
+        document.getElementById('windowControlClose').onclick = function()
+        {
+            win.close();
+        };
+
+        // Max
+        document.getElementById('windowControlMaximize').onclick = function()
+        {
+            if (win.isMaximized)
+                win.unmaximize();
+            else
+                win.maximize();
+        };
+
+        // Listen to the minimize event
+        win.on('minimize', function() {
+              console.log('Window is minimized');
+        });
+
+        win.on('maximize', function(){
+            win.isMaximized = true;
+        });
+
+        win.on('unmaximize', function(){
+            win.isMaximized = false;
+        });
+
+
+        </script>
+
+    </body>
 </html>
