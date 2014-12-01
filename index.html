@@ -23,7 +23,7 @@
 
         <script>
 
-        // Min
+            // Min
         document.getElementById('windowControlMinimize').onclick = function()
         {
             win.minimize();
@@ -38,22 +38,27 @@
         // Max
         document.getElementById('windowControlMaximize').onclick = function()
         {
-            if (win.isMaximized)
+            if (win.isMaximized){
+                win.isMaximized = false;
                 win.unmaximize();
-            else
+            }else{
+                win.isMaximized = true;
                 win.maximize();
+            }
         };
 
         // Listen to the minimize event
         win.on('minimize', function() {
-              console.log('Window is minimized');
+            console.log('Window is minimized');
         });
 
         win.on('maximize', function(){
+            console.log('Window is maximized');
             win.isMaximized = true;
         });
 
         win.on('unmaximize', function(){
+            console.log('Window is unmaximized');
             win.isMaximized = false;
         });
 
@@ -62,3 +67,4 @@
 
     </body>
 </html>
+

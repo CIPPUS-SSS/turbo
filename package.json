@@ -1,13 +1,24 @@
 {
     "name": "turbo",
-    "main": "index.html",
-    "version":"0.0.1",
     "description":"open dictionary",
+    "version":"0.0.1",
+    "keywords":["dictionary","zone-intellegent"],
     "window": {
-        "frame":true,//栏目条
-        "toolbar": true,//浏览条
+        "title":"main window",
+        "frame":false,
+        "toolbar": true,
         "width": 800,
-        "height": 600
+        "height": 600,
+        "position":"mouse",
+        "resizable":false,
+        "min_width":400,
+        "min_height":200,
+        "max_width":800,
+        "max_height":600
+    },
+    "main": "index.html",
+    "webkit":{
+        "plugin":true
     },
     "maintainers": [
         {
@@ -20,6 +31,7 @@
         "url": "git://github.com/CIPPUS-SSS/turbo.git"
     },
     "dependencies": {
-        "markdown":"0.5.0"
+        "markdown":"0.5.0",
+        "request":"2.49.0"
     }
 }
