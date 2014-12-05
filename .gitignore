@@ -1,6 +1,7 @@
 #library link
 libudev.so.0
 config.json
+tmp/
 # Logs
 logs
 *.log
