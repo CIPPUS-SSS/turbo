@@ -105,8 +105,4 @@ if( line != null ){
     });
 };
 
-query('hello',function(err,data){
-    console.log(data);
-});
-
 module.exports.query = query;
