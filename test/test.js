@@ -28,6 +28,7 @@ var bufs = [{
     output:257
 }
 ];
+
 describe('Buffer',function(){
     describe('#toNetworkOrder',function(){
         it('should return big-end number',function(){
@@ -37,3 +38,16 @@ describe('Buffer',function(){
         });
     });
 });
+
+describe('dict',function(){
+    describe('#query',function(){
+        it('should return result -> = halo. ',function(){
+            process.chdir('..');
+            dict.query('hello',function(err,date){
+                if(err) throw err;
+                assert.equal(data=='= hallo.'); 
+            }); 
+        });
+    });
+});
+

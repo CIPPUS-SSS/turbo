@@ -9,54 +9,104 @@ Buffer.prototype.toNetworkOrder = function(size){
     if(!(size == 32 || size == 64)) {
         var err = "only 32bit or 64bit allowed"
         throw err;
-    }
+    };
     if(this.length != size/8){
         var err = "slice.length is not equal size!"
         throw err;
-    }
+    };
     var num = 0;
     for(var i = 0 ;i < this.length;i++){
         num += this[i]<<(size-8*(i+1));
-    }
+    };
     return num;
 };
 
+var config = {};
 var wordDatas = [];
-fs.readFile('./dics/stardict-oald-cn-2.4.2/oald_cn.idx',function(err,data){
-    //4*8 = 32bit,default offset
-    var OF = 4;
-    //4*8 = 32bit,word data size
-    var WS = 4;
-    if(err){
-        return console.log(err);
-    }
-    var index = 0;
-    var tail = 0;
-    for(var i = 0;i<100; i++){
-        if(data[i] == 0x00){
-            index = i;
-            console.log("index",index);
-            var word = data.slice(tail,index);
-            var wordOffset = data.slice(index+1,index+5);
-            var wordSize = data.slice(index+5,index+9);
-            wordDatas.push({
-                word:word,
-                offset:wordOffset,
-                dataSize:wordSize
-            });
-            console.log(wordOffset.toNetworkOrder());
-            console.log(wordSize.toNetworkOrder());
-            console.log(word.toString('utf-8',0,word.length));
-            tail = index + OF + WS + 1;
-            console.log("tail",tail);
-            i += OF + WS;
-        }
-    }
-    /* console.log(index); var word = data.slice(0,index); var offset = data.slice(index+1,index+5); console.log(offset); console.log(offset.toNetworkOrder()); console.log(word.toString('utf-8',0,word.length)); */ //var index = data.IndexOf('\0');
-    //console.log(index);
-    //var word_data_offset = data[index+1];
 
-    //console.log(util.format("%d",word_data_offset));
-    //console.log(data.slice(0,index));
+var query = function(queryString,callback){
+        
+    fs.readFile('./dics/stardict-oald-cn-2.4.2/oald_cn.ifo','utf-8',function(err,data){
+        if (err) return callback(err);
+        var lines = data.split('\n');
+        var title = lines[0];
+        if (!title || title != "StarDict's dict ifo file") {
+            var err = "Format Error: .info file need title \"StarDict's dict ifo file\"";
+            return callback(err);
+        }
+        var lines  = data.split('\n').slice(1);
+
+        for(var i = 0;i<lines.length;i++){
+            var line = lines[i].match(/[\s\S]*=[\s\S]*/);
+//read .ifo file
+if( line != null ){
+    var pair = line.toString().split('=');
+    key = pair[0];
+    value = pair[1];
+    config[key]=value;
+}
+        }
+        //TODO:check idxoffsetbits in 3.0.0 and check synwordcount if .syn file exists
+        ["bookname","wordcount","idxfilesize","sametypesequence"].forEach(function(index,ele){
+            if(!config[ele]) return "need file information: "+ele;
+        });
+        fs.readFile('./dics/stardict-oald-cn-2.4.2/oald_cn.idx',function(err,data){
+            if (err) return callback(err);
+            //4*8 = 32bit,default offset
+            var OF = 4;
+            //4*8 = 32bit,word data size
+            var WS = 4;
+            var index = 0;
+            var tail = 0;
+            for(var i = 0;i<config.idxfilesize; i++){
+                if(data[i] == 0x00){
+                    index = i;
+                    var word = data.slice(tail,index);
+                    var wordOffset = data.slice(index+1,index+5);
+                    var wordSize = data.slice(index+5,index+9);
+                    wordDatas.push({
+                        word:word.toString('utf-8',0,word.length),
+                        offset:wordOffset.toNetworkOrder(config.idxoffsetbits),
+                        dataSize:wordSize.toNetworkOrder(config.idxoffsetbits)
+                    });
+                    tail = index + OF + WS + 1;
+                    i += OF + WS;
+                };
+            };
+            for(var i = 0; i<wordDatas.length;i++){
+                if(wordDatas[i].word == queryString){
+                    var word = wordDatas[i];
+                    fs.open('./dics/stardict-oald-cn-2.4.2/oald_cn.dict','r',function(err,fd){
+                        if(err)
+                            throw err;
+                        var buf = new Buffer(word.dataSize);
+                        fs.fstat(fd,function(err,stats){
+                            if(err){
+                                return fs.close(fd,function(){
+                                    callback(err);
+                                });
+                            }
+                            fs.read(fd,buf,0,word.dataSize,word.offset,function(err,n,buf){
+                                if(err){
+                                    return fs.close(fd,function(err){
+                                        return callback(err);
+                                    });
+                                }
+                                return fs.close(fd,function(err){
+                                           callback
+                                    return callback(err,buf.toString('utf-8',0,buf.length)); 
+                                });
+                            });
+                        });
+                    });
+                };
+            };
+        });
+    });
+};
+
+query('hello',function(err,data){
+    console.log(data);
 });
 
+module.exports.query = query;
