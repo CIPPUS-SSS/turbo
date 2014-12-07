@@ -1,5 +1,7 @@
 var fs = require('fs');
 var util = require('util');
+var exec = require('child_process').exec;
+var emitter = require('events').EventEmitter;
 
 
 /*
@@ -110,4 +112,23 @@ if( line != null ){
     });
 };
 
+
+var listener = new emitter();
+
+listener.begin = function(){
+    setInterval(function(){
+        child = exec('xclip -o',function(err,stdout,stderr){
+            if(err)console.log(err);
+            listener.emit('word',stdout);
+        });
+    },1000);
+
+};
+
+listener.end = function(){
+    this.removeAllListeners('word');
+};
+
+
+module.exports.listenr  = listener;
 module.exports.query = query;

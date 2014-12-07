@@ -1,13 +1,12 @@
-#turbo
+#Turbo
 
-##Introduction
-
-Turbo is a open dictionary implemented in node-webkit.
+Turbo is an open and cross-platform dictionary
 
 ##Dependencies
 
 *  node-v0.10.33
 *  node-webkit-v0.11.1
+*  clipboard manipulation tool xclip(Linux),clip(Windows),pbcopy(Mac OS X)
 
 ##Test
 
@@ -25,6 +24,6 @@ mocha
 
 ##TODO:
 
-~~ 1.  add off-line dictionares support
+~~1.  add off-line dictionares support
 
 2.  zone-intellegent translation

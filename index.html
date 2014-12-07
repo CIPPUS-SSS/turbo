@@ -10,7 +10,27 @@
             var API  = require('./API.js');
             var win = nw.Window.get();
             win.isMaximized = false;
+            //listening on clipboard change
+            var cache = '';
+            var smallWindow = nw.Window.get(open('small.html',{
+                position:'mouse',
+                focus:true,
+                width:100,
+                height:100,
+                single-instance:false
+            }));
+            console.log("position",smallWindow.x,smallWindow.y);
+            /*
+               dict.listenr.on('word',function(word){
+               if(cache != word){
+               console.log(word);
+               smallWindow.show();
+               setTimeout(smallWindow.hide,3000);
+               };
 
+               });
+               dict.listenr.begin();
+             */
         </script>
 
     </head>

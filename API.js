@@ -25,6 +25,7 @@ const URLTEMPLATE = "http://fanyi.youdao.com/openapi.do?keyfrom=asd123b&key=7202
 var keyfrom = "turbo-dict"
 var key = 1224097275
 
+//TODO:current error handle is so ugly
 function get(query,cb){
     result = {};
     if(query =="" || query==" "){
