@@ -1,6 +1,7 @@
 #turbo
 
 ##Introduction
+
 Turbo is a open dictionary implemented in node-webkit.
 
 ##Dependencies
@@ -16,6 +17,11 @@ Turbo is tested by [mocha](https://github.com/mochajs/mocha),in order to install
 cd test/
 mocha
 ```
+
+##BUG:
+
+1.  Can not modify window size if the window is maximized.
+
 
 ##TODO:
 

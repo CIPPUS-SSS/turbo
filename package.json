@@ -5,7 +5,7 @@
     "keywords":["dictionary","zone-intellegent"],
     "window": {
         "title":"main window",
-        "frame":false,
+        "frame":true,
         "toolbar": true,
         "width": 800,
         "height": 600,

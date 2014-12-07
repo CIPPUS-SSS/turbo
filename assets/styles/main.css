@@ -1,0 +1,12 @@
+body,header,input,button {
+    margin:0px;
+    padding:0px;
+    border:none;
+}
+input {
+    border:1px solid;
+}
+button {
+    background-color:#DBDADD;
+    border:1px solid;
+}

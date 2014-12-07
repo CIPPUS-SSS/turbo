@@ -40,14 +40,23 @@ describe('Buffer',function(){
 });
 
 describe('dict',function(){
+    process.chdir('..');
+    /*
     describe('#query',function(){
-        it('should return result -> = halo. ',function(){
-            process.chdir('..');
+        it('should return result -> = halo. ',function(done){
             dict.query('hello',function(err,date){
                 if(err) throw err;
                 assert.equal(data=='= hallo.'); 
             }); 
         });
     });
+   */
+    describe('#query Count',function(){
+        it('callback should run once',function(done){
+            dict.query('mike',function(err,data){
+                if(err)throw err;
+                console.log(data);
+            });
+        });
+    });
 });
-

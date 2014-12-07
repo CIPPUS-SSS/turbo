@@ -2,9 +2,12 @@
 <html>
     <head>
         <title>Turbo</title>
+        <link rel="stylesheet" type="text/css" href="./assets/styles/main.css">
         <script>
 
             var nw = require('nw.gui');
+            var dict = require('./dict.js');
+            var API  = require('./API.js');
             var win = nw.Window.get();
             win.isMaximized = false;
 
@@ -12,55 +15,90 @@
 
     </head>
     <body>
-
-        <header>
+        <div>
             <ul>
                 <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li><!--
                 --><li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li><!--
                 --><li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
             </ul>
-        </header>
-
+        </div>
+        <div id="navigatorBar">
+            <input id="queryString" type="text">
+            <button id="queryButton"><span>Query</span></button>
+        </div>
+        <div id="panel">
+            <p></p>
+        </div>
         <script>
 
+            document.getElementById('queryButton').onclick = function(e){
+                console.log('querying '+document.getElementById('queryString').value);
+                var count  = 0;
+                var queryValue =  document.getElementById('queryString').value;
+                var translationResult = document.getElementById('panel').getElementsByTagName('p')[0];
+                translationResult.innerHTML = '';
+                dict.query(queryValue,function(err,data){
+                    if(err)throw err;
+                    var content = '';
+                    data.split('\n').forEach(function(ele,i){
+                        if(i==0){
+                            ele = '<span style="color:blue;">' +ele+'</span>';
+                        }
+                        content += ele +'<br>';
+                    });
+                    if( translationResult.innerHTML.length>0){
+                        translationResult.innerHTML = content + translationResult.innerHTML;
+                    }else{
+                        translationResult.innerHTML += content;
+                    };
+                });
+                API.get(queryValue,function(result){
+                    var content = '<br>';
+                    content = result.translation.join('<br>');
+                    result.web.forEach(function(ele,i){
+                        content+=ele.key+'<br>'+ele.value.join(',')+'<br>';
+                    });
+                    translationResult.innerHTML += content;
+                });
+            };
             // Min
-        document.getElementById('windowControlMinimize').onclick = function()
-        {
-            win.minimize();
-        };
+            document.getElementById('windowControlMinimize').onclick = function()
+            {
+                win.minimize();
+            };
 
-        // Close
-        document.getElementById('windowControlClose').onclick = function()
-        {
-            win.close();
-        };
+            // Close
+            document.getElementById('windowControlClose').onclick = function()
+            {
+                win.close();
+            };
 
-        // Max
-        document.getElementById('windowControlMaximize').onclick = function()
-        {
-            if (win.isMaximized){
-                win.isMaximized = false;
-                win.unmaximize();
-            }else{
+            // Max
+            document.getElementById('windowControlMaximize').onclick = function()
+            {
+                if (win.isMaximized){
+                    win.isMaximized = false;
+                    win.unmaximize();
+                }else{
+                    win.isMaximized = true;
+                    win.maximize();
+                }
+            };
+
+            // Listen to the minimize event
+            win.on('minimize', function() {
+                console.log('Window is minimized');
+            });
+
+            win.on('maximize', function(){
+                console.log('Window is maximized');
                 win.isMaximized = true;
-                win.maximize();
-            }
-        };
+            });
 
-        // Listen to the minimize event
-        win.on('minimize', function() {
-            console.log('Window is minimized');
-        });
-
-        win.on('maximize', function(){
-            console.log('Window is maximized');
-            win.isMaximized = true;
-        });
-
-        win.on('unmaximize', function(){
-            console.log('Window is unmaximized');
-            win.isMaximized = false;
-        });
+            win.on('unmaximize', function(){
+                console.log('Window is unmaximized');
+                win.isMaximized = false;
+            });
 
 
         </script>

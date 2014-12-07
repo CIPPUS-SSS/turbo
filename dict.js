@@ -2,6 +2,11 @@ var fs = require('fs');
 var util = require('util');
 
 
+/*
+ *  it's module is fo  start dict format parsing.
+ *  more detailed format information,please see []()
+ */
+
 Buffer.prototype.toNetworkOrder = function(size){ 
 
     var size = size?size:32;
@@ -22,10 +27,9 @@ Buffer.prototype.toNetworkOrder = function(size){
 };
 
 var config = {};
-var wordDatas = [];
 
 var query = function(queryString,callback){
-        
+    var wordDatas = [];
     fs.readFile('./dics/stardict-oald-cn-2.4.2/oald_cn.ifo','utf-8',function(err,data){
         if (err) return callback(err);
         var lines = data.split('\n');
@@ -74,6 +78,8 @@ if( line != null ){
                 };
             };
             for(var i = 0; i<wordDatas.length;i++){
+            };
+            for(var i = 0; i<wordDatas.length;i++){
                 if(wordDatas[i].word == queryString){
                     var word = wordDatas[i];
                     fs.open('./dics/stardict-oald-cn-2.4.2/oald_cn.dict','r',function(err,fd){
@@ -83,7 +89,7 @@ if( line != null ){
                         fs.fstat(fd,function(err,stats){
                             if(err){
                                 return fs.close(fd,function(){
-                                    callback(err);
+                                    return callback(err);
                                 });
                             }
                             fs.read(fd,buf,0,word.dataSize,word.offset,function(err,n,buf){
@@ -93,8 +99,7 @@ if( line != null ){
                                     });
                                 }
                                 return fs.close(fd,function(err){
-                                           callback
-                                    return callback(err,buf.toString('utf-8',0,buf.length)); 
+                                    return callback(err,buf.toString('utf-8',0,buf.length));
                                 });
                             });
                         });
