@@ -32,7 +32,7 @@ var config = {};
 
 var query = function(queryString,callback){
     var wordDatas = [];
-    fs.readFile('./dics/stardict-oald-cn-2.4.2/oald_cn.ifo','utf-8',function(err,data){
+    fs.readFile('resources/dics/stardict-oald-cn-2.4.2/oald_cn.ifo','utf-8',function(err,data){
         if (err) return callback(err);
         var lines = data.split('\n');
         var title = lines[0];
@@ -56,7 +56,7 @@ if( line != null ){
         ["bookname","wordcount","idxfilesize","sametypesequence"].forEach(function(index,ele){
             if(!config[ele]) return "need file information: "+ele;
         });
-        fs.readFile('./dics/stardict-oald-cn-2.4.2/oald_cn.idx',function(err,data){
+        fs.readFile('resources/dics/stardict-oald-cn-2.4.2/oald_cn.idx',function(err,data){
             if (err) return callback(err);
             //4*8 = 32bit,default offset
             var OF = 4;
@@ -84,7 +84,7 @@ if( line != null ){
             for(var i = 0; i<wordDatas.length;i++){
                 if(wordDatas[i].word == queryString){
                     var word = wordDatas[i];
-                    fs.open('./dics/stardict-oald-cn-2.4.2/oald_cn.dict','r',function(err,fd){
+                    fs.open('resources/dics/stardict-oald-cn-2.4.2/oald_cn.dict','r',function(err,fd){
                         if(err)
                             throw err;
                         var buf = new Buffer(word.dataSize);

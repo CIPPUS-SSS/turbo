@@ -2,120 +2,120 @@
 <html>
     <head>
         <title>Turbo</title>
-        <link rel="stylesheet" type="text/css" href="./assets/styles/main.css">
-        <script>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </script>
+    <script>
+        var nw = require('nw.gui');
+        var dict = require('./js/dict.js');
+        var API  = require('./js/API.js');
+        var win = nw.Window.get();
 
-            var nw = require('nw.gui');
-            var dict = require('./dict.js');
-            var API  = require('./API.js');
-            var win = nw.Window.get();
-            win.isMaximized = false;
-            //listening on clipboard change
-            var cache = '';
+        win.isMaximized = false;
+        //listening on clipboard change
+        var cache = '';
+        var smallWindow;
 
-            /*
-               dict.listenr.on('word',function(word){
-               if(cache != word){
-               console.log(word);
-               smallWindow.show();
-               setTimeout(smallWindow.hide,3000);
-               };
+        //window object
+        var new_win = window.open('small.html');
+        smallWindow = nw.Window.get(new_win);
+        smallWindow.height = 100;
+        smallWindow.width = 100;
+        smallWindow.hide();
+        var once = 0;
+        dict.listenr.on('word',function(word){
+            if(cache != word && once == 0){
+                once++;
+                smallWindow.setPosition('mouse');
+                console.log(new_win.window.document.write(word));
+                smallWindow.show();
+            };
 
-               });
-               dict.listenr.begin();
-             */
-        </script>
+        });
+        dict.listenr.begin();
+    </script>
 
-    </head>
-    <body>
-        <div id="frameBar" class="clearfix">
-            <ul>
-                <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li>
-                <li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li>
-                <li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
-            </ul>
-        </div>
-        <div id="navigatorBar">
-            <input id="queryString" type="text">
-            <button id="queryButton"><span>Query</span></button>
-        </div>
-        <div id="panel">
-            <p></p>
-        </div>
-        <script>
+</head>
+<body>
+    <div id="frameBar" class="clearfix">
+        <ul>
+            <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li>
+            <li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li>
+            <li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
+        </ul>
+    </div>
+    <div id="navigatorBar">
+        <input id="queryString" type="text">
+        <button id="queryButton"><span>Query</span></button>
+    </div>
+    <div id="panel">
+        <p></p>
+    </div>
+    <script>
 
-            document.getElementById('queryButton').onclick = function(e){
-                console.log('querying '+document.getElementById('queryString').value);
-                var count  = 0;
-                var queryValue =  document.getElementById('queryString').value;
-                var translationResult = document.getElementById('panel').getElementsByTagName('p')[0];
-                translationResult.innerHTML = '';
-                dict.query(queryValue,function(err,data){
-                    if(err)throw err;
-                    var content = '';
-                    data.split('\n').forEach(function(ele,i){
-                        if(i==0){
-                            ele = '<span style="color:blue;">' +ele+'</span>';
-                        }
-                        content += ele +'<br>';
-                    });
-                    if( translationResult.innerHTML.length>0){
-                        translationResult.innerHTML = content + translationResult.innerHTML;
-                    }else{
-                        translationResult.innerHTML += content;
-                    };
+        document.getElementById('queryButton').onclick = function(e){
+            console.log('querying '+document.getElementById('queryString').value);
+            var count  = 0;
+            var queryValue =  document.getElementById('queryString').value;
+            var translationResult = document.getElementById('panel').getElementsByTagName('p')[0];
+            translationResult.innerHTML = '';
+            dict.query(queryValue,function(err,data){
+                if(err)throw err;
+                var content = '';
+                data.split('\n').forEach(function(ele,i){
+                    if(i==0){
+                        ele = '<span style="color:blue;">' +ele+'</span>';
+                    }
+                    content += ele +'<br>';
                 });
-                API.get(queryValue,function(result){
-                    var content = '<br>';
-                    content = result.translation.join('<br>');
-                    result.web.forEach(function(ele,i){
-                        content+=ele.key+'<br>'+ele.value.join(',')+'<br>';
-                    });
-                    translationResult.innerHTML += content;
-                });
-            };
-            // Min
-            document.getElementById('windowControlMinimize').onclick = function()
-            {
-                win.minimize();
-            };
-
-            // Close
-            document.getElementById('windowControlClose').onclick = function()
-            {
-                win.close();
-            };
-
-            // Max
-            document.getElementById('windowControlMaximize').onclick = function()
-            {
-                if (win.isMaximized){
-                    win.isMaximized = false;
-                    win.unmaximize();
+                if( translationResult.innerHTML.length>0){
+                    translationResult.innerHTML = content + translationResult.innerHTML;
                 }else{
-                    win.isMaximized = true;
-                    win.maximize();
-                }
-            };
-
-            // Listen to the minimize event
-            win.on('minimize', function() {
-                console.log('Window is minimized');
+                    translationResult.innerHTML += content;
+                };
             });
-
-            win.on('maximize', function(){
-                console.log('Window is maximized');
-                win.isMaximized = true;
+            API.get(queryValue,function(result){
+                var content = '<br>';
+                content = result.translation.join('<br>');
+                result.web.forEach(function(ele,i){
+                    content+=ele.key+'<br>'+ele.value.join(',')+'<br>';
+                });
+                translationResult.innerHTML += content;
             });
+        };
+        // Min
+        document.getElementById('windowControlMinimize').onclick = function()
+        {
+            win.minimize();
+        };
 
-            win.on('unmaximize', function(){
-                console.log('Window is unmaximized');
+        // Close
+        document.getElementById('windowControlClose').onclick = function()
+        {
+            win.close();
+        };
+
+        // Max
+        document.getElementById('windowControlMaximize').onclick = function()
+        {
+            if (win.isMaximized){
                 win.isMaximized = false;
-            });
+                win.unmaximize();
+            }else{
+                win.isMaximized = true;
+                win.maximize();
+            }
+        };
 
+        win.on('maximize', function(){
+            win.isMaximized = true;
+        });
 
-        </script>
+        win.on('unmaximize', function(){
+            win.isMaximized = false;
+        });
 
-    </body>
+    </script>
+
+</body>
 </html>
 

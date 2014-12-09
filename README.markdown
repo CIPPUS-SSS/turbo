@@ -5,7 +5,7 @@ Turbo is an open and cross-platform dictionary
 ##Dependencies
 
 *  node-v0.10.33
-*  node-webkit-v0.11.1
+*  node-webkit-v0.8.6
 *  clipboard manipulation tool xclip(Linux),clip(Windows),pbcopy(Mac OS X)
 
 ##Test
@@ -19,11 +19,19 @@ mocha
 
 ##BUG:
 
-1.  Can not modify window size if the window is maximized.
+
+
+##For Developers:
+
+If you come across this error,pleas check this [wiki](https://github.com/rogerwang/node-webkit/wiki/Troubleshooting#lack-of-libudevso0)
+
+```
+nw: error while loading shared libraries: libudev.so.0: cannot open shared object file: No such file or directory
+```
 
 
 ##TODO:
 
-~~1.  add off-line dictionares support
+~~1.  add off-line dictionares support~~
 
 2.  zone-intellegent translation

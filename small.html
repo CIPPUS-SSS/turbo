@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Turbo</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+    <script>
+        var nw = require('nw.gui');
+        var win = nw.Window.get();
+        win.moveBy(win.width/2,win.height/2);
+    </script>
+    <body>
+        <div id="frameBar" class="clearfix">
+            <ul>
+                <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li>
+                <li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li>
+                <li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
+            </ul>
+        </div>
+        <div id="panel">
+            <p>small window</p>
+        </div>
+
+        <script>
+            document.getElementById('windowControlMinimize').onclick = function()
+            {
+                win.minimize();
+            };
+
+            // Close
+            document.getElementById('windowControlClose').onclick = function()
+            {
+                win.close();
+            };
+
+            // Max
+            document.getElementById('windowControlMaximize').onclick = function()
+            {
+                if (win.isMaximized){
+                    win.isMaximized = false;
+                    win.unmaximize();
+                }else{
+                    win.isMaximized = true;
+                    win.maximize();
+                }
+            };
+
+            win.on('maximize', function(){
+                win.isMaximized = true;
+            });
+
+            win.on('unmaximize', function(){
+                win.isMaximized = false;
+            });
+        </script>
+    </body>
+</html>
+

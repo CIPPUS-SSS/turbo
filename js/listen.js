@@ -1,14 +1,17 @@
 var exec = require('child_process').exec;
 var emitter = require('events').EventEmitter;
 
+var gui = require('nw.gui');
 var listener = new emitter();
 
+var clipboard = gui.Clipboard.get();
 listener.begin = function(){
     setInterval(function(){
-        child = exec('xclip -o',function(err,stdout,stderr){
-            if(err)console.log(err);
-            listener.emit('word',stdout);
-        });
+            var text = clipboard.get('text');
+            if(text.length > 0){
+                listener.emit('word',text);
+            }
+            clipboard.clear();
     },1000);
 
 };

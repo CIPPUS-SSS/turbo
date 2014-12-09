@@ -1,5 +1,6 @@
 {
     "name": "turbo",
+    "main": "index.html",
     "description":"open dictionary",
     "version":"0.0.1",
     "keywords":["dictionary","zone-intellegent"],
@@ -10,15 +11,7 @@
         "width": 800,
         "height": 600,
         "position":"mouse",
-        "resizable":false,
-        "min_width":400,
-        "min_height":300,
-        "max_width":800,
-        "max_height":600
-    },
-    "main": "index.html",
-    "webkit":{
-        "plugin":true
+        "resizable":false
     },
     "maintainers": [
         {
