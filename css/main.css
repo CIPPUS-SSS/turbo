@@ -1,0 +1,31 @@
+body,header,input,button,ul {
+    margin:0px;
+    padding:0px;
+    border:none;
+}
+
+.clearfix {
+      overflow: auto;/*包裹浮动元素*/
+}
+
+#frameBar {
+    background-color:#000;
+}
+#frameBar ul{
+    float:right
+}
+#frameBar ul li {
+    display:inline;
+}
+#frameBar ul li a {
+    color:#fff;
+    text-decoration:none;
+}
+
+input {
+    border:1px solid;
+}
+button {
+    background-color:#DBDADD;
+    border:1px solid;
+}

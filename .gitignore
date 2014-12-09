@@ -2,6 +2,7 @@
 *.dict
 libudev.so.0
 config.json
+*.swp
 tmp/
 # Logs
 logs

@@ -12,14 +12,7 @@
             win.isMaximized = false;
             //listening on clipboard change
             var cache = '';
-            var smallWindow = nw.Window.get(open('small.html',{
-                position:'mouse',
-                focus:true,
-                width:100,
-                height:100,
-                single-instance:false
-            }));
-            console.log("position",smallWindow.x,smallWindow.y);
+
             /*
                dict.listenr.on('word',function(word){
                if(cache != word){
@@ -35,11 +28,11 @@
 
     </head>
     <body>
-        <div>
+        <div id="frameBar" class="clearfix">
             <ul>
-                <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li><!--
-                --><li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li><!--
-                --><li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
+                <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li>
+                <li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li>
+                <li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
             </ul>
         </div>
         <div id="navigatorBar">
