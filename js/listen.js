@@ -2,9 +2,11 @@ var exec = require('child_process').exec;
 var emitter = require('events').EventEmitter;
 
 var gui = require('nw.gui');
+
 var listener = new emitter();
 
 var clipboard = gui.Clipboard.get();
+
 listener.begin = function(){
     setInterval(function(){
             var text = clipboard.get('text');

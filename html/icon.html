@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Turbo</title>
+        <style>
+            #icon {
+                width:42px;
+                height:42px;
+                background-image: url("../resources/images/icon.jpg");
+            }
+        </style>
+        <script>
+            var nw = require('nw.gui');
+            var fs = require('fs');
+            var win_icon = nw.Window.get();
+            function switch_on_small_win(){
+                var stringBuf = fs.readFileSync('sync.json','utf-8');
+                var sync = JSON.parse(stringBuf);
+                sync.small_win_is_open = true;
+                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8'); 
+                console.log('small window',sync);
+            };
+            function switch_off_small_win(){
+                var stringBuf = fs.readFileSync('sync.json','utf-8');
+                var sync = JSON.parse(stringBuf);
+                sync.small_win_is_open = false;
+                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8'); 
+            };
+            function switch_off_icon_win(){
+                var stringBuf = fs.readFileSync('sync.json','utf-8');
+                var sync = JSON.parse(stringBuf);
+                sync.icon_win_is_open = false;
+                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8');
+            };
+
+            var small_win = {};
+
+            function popupAWindow(content){
+                small_win = nw.Window.open('./small.html',{
+                    position:'mouse',
+                    width:100,
+                    height:100,
+                    focus:true,
+                    frame:false,
+                    toolbar:true
+                });
+
+                small_win.on('loaded',function(){
+                    small_win.window.document.write('hello world!');
+                });
+
+                small_win.loaded = function(){
+                    small_win.window.document.write('hello world!');
+                };
+                switch_on_small_win();
+            };
+
+
+            window.onload=function(){
+                document.getElementById('icon').onclick = function(){
+                    popupAWindow('popup');
+                    win_icon.close();
+                    switch_off_icon_win();
+                };
+            };
+        </script>
+    </head>
+    <body>
+        <div id="icon">
+        </div>
+    </body>
+</html>

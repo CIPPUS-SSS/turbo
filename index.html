@@ -5,33 +5,77 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
     </script>
     <script>
-        var nw = require('nw.gui');
+        var nw   = require('nw.gui');
+        var fs   = require('fs');
         var dict = require('./js/dict.js');
         var API  = require('./js/API.js');
-        var win = nw.Window.get();
+        var win  = nw.Window.get();
+
+        //synchronization file 
 
         win.isMaximized = false;
         //listening on clipboard change
         var cache = '';
         var smallWindow;
+        var new_win;
+        var icon_win = {};
 
-        //window object
-        var new_win = window.open('small.html');
-        smallWindow = nw.Window.get(new_win);
-        smallWindow.height = 100;
-        smallWindow.width = 100;
-        smallWindow.hide();
-        var once = 0;
+        win_init();
+
+        function switch_on(){
+            var stringBuf = fs.readFileSync('sync.json','utf-8');
+            var sync = JSON.parse(stringBuf);
+            sync.icon_win_is_open = true;
+            fs.writeFile('sync.json',JSON.stringify(sync),'utf-8');
+        };
+
+
+        function switch_off(){
+            var stringBuf = fs.readFileSync('sync.json','utf-8');
+            var sync = JSON.parse(stringBuf);
+            sync.icon_win_is_open = false;
+            fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8');
+        };
+        function win_init(){
+            var stringBuf = fs.readFileSync('sync.json','utf-8');
+            var sync = JSON.parse(stringBuf);
+            sync.icon_win_is_open = false;
+            sync.small_win_is_open = false;
+            fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8');
+        };
+
+        function icon_can_be_open(){
+            var stringBuf = fs.readFileSync('sync.json','utf-8');
+            var sync = JSON.parse(stringBuf);
+            return !sync.icon_win_is_open && !sync.small_win_is_open;
+        };
+
+        function popupIcon(){
+            if(icon_can_be_open()){
+                icon_win = nw.Window.open('./html/icon.html',{
+                    position:'mouse',
+                    width:80,
+                    height:80,
+                    focus:true,
+                    frame:false,
+                    toolbar:true
+                });
+                switch_on();
+                setTimeout(function(){
+                    icon_win.close();
+                    switch_off();
+                },3000);
+            }
+        };
+
         dict.listenr.on('word',function(word){
-            if(cache != word && once == 0){
-                once++;
-                smallWindow.setPosition('mouse');
-                console.log(new_win.window.document.write(word));
-                smallWindow.show();
+            if(cache != word){
+                popupIcon();
             };
 
         });
         dict.listenr.begin();
+
     </script>
 
 </head>
