@@ -6,17 +6,91 @@
     </head>
     <script>
         var nw = require('nw.gui');
-        var win_small = nw.Window.get();
+        var fs = require('fs');
+        var dict = require('./js/dict.js');
+        var win = nw.Window.get();
         window.onload = function(){
-            //var clipboard = nw.Clipboard.get();
-            //var text = clipboard.get('text');
-            //var innerHTML = document.getElementById('panel').getElementsByTagName('p')[0].innerHTML = '<p>'+text+'</p>'
+            var translationResult = document.getElementById('panel').getElementsByTagName('p')[0];
+            console.log(translationResult);
+            translationResult.innerHTML = '';
+            var stringBuf = fs.readFileSync('sync.json','utf-8');
+            var sync = JSON.parse(stringBuf);
+            var word = sync.query_string
+            dict.query(word,function(err,data){
+                if(err)console.log(err);
+                var content = '';
+                data.split('\n').forEach(function(ele,i){
+                    if(i==0){
+                        ele = '<span style="color:blue;">' +ele+'</span>';
+                    }
+                    content += ele +'<br>';
+                });
+                if( translationResult.innerHTML.length>0){
+                    translationResult.innerHTML = content + translationResult.innerHTML;
+                }else{
+                    translationResult.innerHTML += content;
+                };
+            });
+
         };
     </script>
     <body>
-        <div id="panel">
-            <p>small window</p>
+        <div id="frameBar" class="clearfix">
+            <ul>
+                <li><a href='#' title='Minimize' id='windowControlMinimize'>-</a></li>
+                <li><a href='#' title='Maximize' id='windowControlMaximize'>o</a></li>
+                <li><a href='#' title='Close'    id='windowControlClose'   >x</a></li>
+            </ul>
         </div>
+        <div id="navigatorBar">
+            <input id="queryString" type="text">
+            <button id="queryButton"><span>Query</span></button>
+        </div>
+        <div id="panel">
+            <p></p>
+        </div>
+        <script>
+            // Min
+        document.getElementById('windowControlMinimize').onclick = function()
+        {
+            win.minimize();
+        };
+
+        // Close
+        document.getElementById('windowControlClose').onclick = function()
+        {
+            win.close();
+        };
+
+        // Max
+        document.getElementById('windowControlMaximize').onclick = function()
+        {
+            if (win.isMaximized){
+                win.unmaximize();
+            }else{
+                win.maximize();
+            }
+        };
+
+        win.on('close',function(){
+            this.hide();
+            console.log('small win is ready to be closed');
+            var stringBuf = fs.readFileSync('sync.json','utf-8');
+            var sync = JSON.parse(stringBuf);
+            sync.small_win_is_open=false;
+            fs.writeFileSync('sync.json',JSON.stringify(sync,'utf-8'));
+            console.log('small win is closed');
+            this.close(true);
+
+        });
+        win.on('maximize', function(){
+            win.isMaximized = true;
+        });
+
+        win.on('unmaximize', function(){
+            win.isMaximized = false;
+        });
+        </script>
     </body>
 </html>
 

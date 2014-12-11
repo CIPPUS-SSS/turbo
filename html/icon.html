@@ -52,17 +52,19 @@
                 small_win.loaded = function(){
                     small_win.window.document.write('hello world!');
                 };
+
                 switch_on_small_win();
             };
 
 
             window.onload=function(){
                 document.getElementById('icon').onclick = function(){
-                    popupAWindow('popup');
+                    popupAWindow();
                     win_icon.close();
                     switch_off_icon_win();
                 };
             };
+
         </script>
     </head>
     <body>
