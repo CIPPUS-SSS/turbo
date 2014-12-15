@@ -115,13 +115,23 @@ if( line != null ){
 
 var listener = new emitter();
 
+var chache='';
 listener.begin = function(){
-    setInterval(function(){
-        child = exec('xclip -o',function(err,stdout,stderr){
-            if(err)console.log(err);
-            listener.emit('word',stdout);
-        });
-    },1000);
+    exec('echo "" | xclip -i',function(err,stdout,stderr){
+        if(err){
+            console.log(err);
+        }else{
+            setInterval(function(){
+                child = exec('xclip -o',function(err,stdout,stderr){
+                    if(err)console.log(err);
+                    if(chache!=stdout){
+                        chache=stdout;
+                        listener.emit('word',stdout);
+                    }
+                });
+            },1000);
+        }
+    });
 
 };
 
@@ -130,5 +140,5 @@ listener.end = function(){
 };
 
 
-module.exports.listenr  = listener;
+module.exports.listener  = listener;
 module.exports.query = query;
