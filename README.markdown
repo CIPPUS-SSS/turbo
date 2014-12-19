@@ -1,4 +1,4 @@
-#Turbo
+#Turbo (it is deprecated and move to [here](https://github.com/ggaaooppeenngg/turbo))
 
 Turbo is an open and cross-platform dictionary
 
