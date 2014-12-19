@@ -9,7 +9,9 @@ body,header,input,button,ul {
 }
 
 #frameBar {
+    height:20px;
     background-color:#000;
+    -webkit-app-region:drag;
 }
 #frameBar ul{
     float:right
@@ -20,6 +22,7 @@ body,header,input,button,ul {
 #frameBar ul li a {
     color:#fff;
     text-decoration:none;
+    -webkit-app-region:no-drag;
 }
 
 input {

@@ -11,12 +11,14 @@
         var win = nw.Window.get();
         window.onload = function(){
             var translationResult = document.getElementById('panel').getElementsByTagName('p')[0];
-            console.log(translationResult);
+            console.log(translationResult.innerHTML);
             translationResult.innerHTML = '';
             var stringBuf = fs.readFileSync('sync.json','utf-8');
             var sync = JSON.parse(stringBuf);
             var word = sync.query_string
+            console.log('dict');
             dict.query(word,function(err,data){
+                console.log('**********************data');
                 if(err)console.log(err);
                 var content = '';
                 data.split('\n').forEach(function(ele,i){
@@ -31,7 +33,6 @@
                     translationResult.innerHTML += content;
                 };
             });
-
         };
     </script>
     <body>
@@ -43,7 +44,7 @@
             </ul>
         </div>
         <div id="panel">
-            <p></p>
+            <p>null</p>
         </div>
         <script>
             // Min
@@ -70,12 +71,10 @@
 
         win.on('close',function(){
             this.hide();
-            console.log('small win is ready to be closed');
             var stringBuf = fs.readFileSync('sync.json','utf-8');
             var sync = JSON.parse(stringBuf);
             sync.small_win_is_open=false;
             fs.writeFileSync('sync.json',JSON.stringify(sync,'utf-8'));
-            console.log('small win is closed');
             this.close(true);
 
         });
@@ -89,4 +88,3 @@
         </script>
     </body>
 </html>
-

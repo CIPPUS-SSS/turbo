@@ -7,11 +7,12 @@
             var fs   = require('fs');
             var dict = require('./js/dict.js');
             var API  = require('./js/API.js');
+            var lib  = require('./js/lib.js');
             var nw   = require('nw.gui');
             var listener = dict.listener;
             var win  = nw.Window.get();
 
-            //synchronization file 
+            //synchronization file
 
             win.isMaximized = false;
             //listening on clipboard change
@@ -69,7 +70,7 @@
                         position:'mouse',
                         width:24,
                         height:24,
-                        focus:true,
+                        focus:false,
                         always_on_top:true,
                         frame:false,
                         toolbar:false
@@ -182,4 +183,3 @@
 
     </body>
 </html>
-

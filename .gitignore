@@ -1,6 +1,7 @@
 #library link
 run.sh
 *.dict
+sync.json
 libudev.so.0
 config.json
 *.swp

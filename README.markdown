@@ -23,6 +23,8 @@ mocha
 
 ##For Developers:
 
+`cp sync.json.sample to sync.json`
+
 If you come across this error,pleas check this [wiki](https://github.com/rogerwang/node-webkit/wiki/Troubleshooting#lack-of-libudevso0)
 
 ```
@@ -32,6 +34,8 @@ nw: error while loading shared libraries: libudev.so.0: cannot open shared objec
 
 ##TODO:
 
-~~1.  add off-line dictionares support~~
+~~add off-line dictionares support~~
 
-2.  zone-intellegent translation
+~~zone-intellegent translation~~
+
+*  add dictionary settings

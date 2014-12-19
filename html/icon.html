@@ -21,14 +21,13 @@
                 var stringBuf = fs.readFileSync('sync.json','utf-8');
                 var sync = JSON.parse(stringBuf);
                 sync.small_win_is_open = true;
-                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8'); 
-                console.log('small window',sync);
+                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8');
             };
             function switch_off_small_win(){
                 var stringBuf = fs.readFileSync('sync.json','utf-8');
                 var sync = JSON.parse(stringBuf);
                 sync.small_win_is_open = false;
-                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8'); 
+                fs.writeFileSync('sync.json',JSON.stringify(sync),'utf-8');
             };
             function switch_off_icon_win(){
                 var stringBuf = fs.readFileSync('sync.json','utf-8');
@@ -48,13 +47,9 @@
                     toolbar:false
                 });
 
-                small_win.on('loaded',function(){
-                    small_win.window.document.write('hello world!');
-                });
-
-                small_win.loaded = function(){
-                    small_win.window.document.write('hello world!');
-                };
+                // small_win.on('loaded', function() {
+                //     small_win.window.document.write('Hello world!');
+                // });
 
                 switch_on_small_win();
             };
